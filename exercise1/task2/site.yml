@@ -1,0 +1,6 @@
+---
+- hosts: all
+  roles:
+    - backports
+    - apt
+    - nginx
