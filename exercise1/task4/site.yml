@@ -1,0 +1,9 @@
+---
+- hosts: all
+  roles:
+    - backports
+    - apt
+    - role: nginx
+      nginx_worker_connections:
+
+
