@@ -1,0 +1,12 @@
+# -*- mode: ruby -*-
+# vi: set ft=ruby :
+
+Vagrant.configure(2) do |config|
+  config.vm.box = "debian/jessie64"
+  config.vm.network "private_network", ip:"10.0.0.2"
+
+  config.vm.provision "ansible" do |ansible|
+    ansible.playbook = "nginx.yml"
+    ansible.sudo = true
+  end
+end

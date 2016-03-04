@@ -1,0 +1,30 @@
+---
+- hosts: all
+
+  tasks:
+
+  - name: add debian backports
+    apt_repository:
+      repo: "deb http://http.debian.net/debian {{ ansible_distribution_release }}-backports main"
+      state: present
+
+  - name: update cache
+    apt:
+      update_cache: yes
+      cache_valid_time: 3600
+
+  - name: install nginx package
+    apt:
+      pkg=nginx
+      state=present
+      default_release={{ansible_distribution_release}}-backports
+
+  - name: configure
+    template:
+      src=nginx.conf.j2
+      dest=/etc/nginx/nginx.conf
+
+  - name: restart service
+    service:
+      name=nginx
+      state=restarted
