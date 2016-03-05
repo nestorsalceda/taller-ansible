@@ -1,0 +1,44 @@
+---
+root_password: "$6$54xVjEI8jZPwi/Ib$p8E0C5po9tm54Cu3fPb.hfX35U9C6cUzMfEDq.Ruy6vUQgWwH5eAVtqfnTxjRS4zfk1DAQy8NGmgvDL0gUR9I/"
+
+unattended_origins_patterns:
+  - "origin=${distro_id},codename=${distro_codename},label=${distro_id}-Security"
+
+users:
+  - username: nestor
+    name: Néstor Salceda
+    uid: 10001
+    groups: ["sudo"]
+    password: "$6$54xVjEI8jZPwi/Ib$p8E0C5po9tm54Cu3fPb.hfX35U9C6cUzMfEDq.Ruy6vUQgWwH5eAVtqfnTxjRS4zfk1DAQy8NGmgvDL0gUR9I/"
+    ssh_key:
+    - "ssh-rsa AAAAB3NzaC1yc2EAAAABIwAAAQEA0Xdx1tnCMf7CwLS2rOrcUakmQfSrO5ITpIdz925HeQpSsybY6swDHOy9fjpuPLiHkKBSOjSPAYlvS61nllhFyPdzeFGctgcCQ0wxWaTpbdtt1iguT+5lx6pxA+M1q9Tx8uLlSyETVcywh2k/iRjq9hlXusapl4SfgfRXB4srNLKfkps7H3BHV0wqZLr1gDTmgxkp0uJ0QmfjlA6Bvo0JqV8zq640mofzQ8xTWQUw4wlWH+FuknWPFYfoKxPTdFc6grqyIEDkEHPy6hwFYeHCNgEA7c0qC7Ghw400ER5sHVcW8dakRS3cAGjrbSoqRtQIci7vjHxVxT4eBe3qtDJ5UQ== nestor@point"
+
+firewall_default_rules:
+  - port: 4949
+    rule: allow
+    from: 10.0.0.2
+
+munin_node_allowed_ips:
+  - 10.0.0.2
+
+logwatch_mailto: sysadmin@codingstones.com
+logwatch_mailfrom: sysadmin@codingstones.com
+logwatch_detail: Med
+logwatch_disabled_services:
+  - zz-network
+  - zz-sys
+  - eximstats
+  - iptables
+
+exim_dc_eximconfig_configtype: 'satellite'
+exim_dc_hide_mailname: 'true'
+exim_dc_readhost: '{{ ansible_hostname }}.codingstones.com'
+exim_dc_smarthost: 'smtp.mailgun.com'
+
+ssl_certificate_name: wildcard.codingstones.com,crt
+ssl_private_key_name: wildcard.codingstones.com.key
+
+rkhunter_report_email: sysadmin@codingstones.com
+
+backupninja_when: 'everyday at 04:00'
+backupninja_reportemail: sysadmin@codingstones.com

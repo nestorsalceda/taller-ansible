@@ -1,0 +1,10 @@
+---
+- hosts: wip
+  roles:
+    - base
+    - role: php5,
+      php5_extra_modules: [
+        "php5-mysql"
+      ]
+    - mysql
+    - nginx

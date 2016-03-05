@@ -1,0 +1,21 @@
+---
+- name: install package
+  apt:
+    pkg=exim4
+    state=present
+
+- name: configure
+  template:
+    src=update-exim4.conf.conf.j2
+    dest=/etc/exim4/update-exim4.conf.conf
+  notify: reconfigure exim
+
+- name: configure authentication with external SMTP services
+  template:
+    src=passwd.client.j2
+    dest=/etc/exim4/passwd.client
+
+- name: start service
+  service:
+    name=exim4
+    state=started

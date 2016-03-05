@@ -1,0 +1,34 @@
+---
+
+- name: install package
+  apt:
+    pkg={{ item }}
+    state=present
+  with_items:
+    - backupninja
+    - duplicity
+
+- name: configure
+  template:
+    src=backupninja.conf.j2
+    dest="/etc/backupninja.conf"
+
+- name: enable postgresql backup
+  template:
+    src=postgresql.pgsql.j2
+    dest="/etc/backup.d/20.pgsql"
+    mode=440
+  when: postgresql_was_installed | default(False)
+
+- name: enable mysql backup
+  template:
+    src=mysql.mysql.j2
+    dest="/etc/backup.d/20.mysql"
+    mode=440
+  when: mysql_was_installed | default(False)
+
+- name: enable duplicity backups
+  template:
+    src=duplicity.dup.j2
+    dest="/etc/backup.d/90.dup"
+    mode=440

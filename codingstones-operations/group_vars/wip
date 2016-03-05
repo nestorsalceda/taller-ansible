@@ -1,0 +1,6 @@
+---
+firewall_rules:
+  - name: WWW
+    rule: allow
+  - name: WWW Secure
+    rule: allow

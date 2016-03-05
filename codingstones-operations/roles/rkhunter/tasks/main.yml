@@ -1,0 +1,10 @@
+---
+- name: install package
+  apt:
+    pkg=rkhunter
+    state=present
+
+- name: configure
+  template:
+    src=rkhunter.j2
+    dest=/etc/default/rkhunter

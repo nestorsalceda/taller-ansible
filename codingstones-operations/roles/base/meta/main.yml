@@ -1,0 +1,15 @@
+---
+dependencies:
+  - { role: backports }
+  - { role: apt }
+  - { role: fail2ban }
+  - { role: sudo }
+  - { role: mivok0.users }
+  - { role: ssh }
+  - { role: firewall }
+  - { role: jnv.unattended-upgrades }
+  - { role: exim }
+  - { role: munin-node }
+  - { role: logwatch }
+  - { role: rkhunter }
+  - { role: chkrootkit }

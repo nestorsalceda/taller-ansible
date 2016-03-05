@@ -1,0 +1,7 @@
+---
+munin_dbdir: /var/lib/munin
+
+munin_user: munin
+munin_password: munin
+
+munin_hosts: []

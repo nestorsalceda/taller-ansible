@@ -1,0 +1,9 @@
+---
+munin_node_allowed_ips:
+  - '^127\.0\.0\.1$'
+  - '^::1$'
+
+munin_node_plugins: []
+munin_node_plugins_config: {}
+munin_node_plugins_disabled:
+  - apt

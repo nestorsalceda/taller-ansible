@@ -1,0 +1,10 @@
+---
+- hosts: all
+  serial: 1
+  tasks:
+    - name: reboot server if needed
+      command: /sbin/reboot removes=/var/run/reboot-required
+
+    - name: wait for the server to reboot
+      local_action: wait_for port={{ ansible_ssh_port | default(22) }} host="{{ ansible_ssh_host | default(inventory_hostname) }}" search_regex=OpenSSH delay=10
+

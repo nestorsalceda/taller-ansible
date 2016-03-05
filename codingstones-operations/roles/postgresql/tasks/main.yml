@@ -1,0 +1,35 @@
+---
+- name: install package
+  apt:
+    pkg={{ item }}
+    state=present
+  with_items:
+    - postgresql
+    - python-psycopg2
+    - libdbd-pg-perl
+
+- name: check if postgresql data directory exists
+  stat:
+    path="{{ postgresql_data_directory }}"
+  register: check_postgresql_data_directory
+
+- name: change data directory
+  include: change_data_directory.yml
+  when:
+    postgresql_data_directory != postgresql_previous_data_directory and
+    check_postgresql_data_directory.stat.exists == False
+
+- name: configure server
+  template:
+    src=postgresql.conf.j2
+    dest=/etc/postgresql/9.4/main/postgresql.conf
+  notify: postgresql restart
+
+- name: start service
+  service:
+    name=postgresql
+    state=started
+    enabled=yes
+
+- name: register that postgresql was installed
+  set_fact: postgresql_was_installed=True

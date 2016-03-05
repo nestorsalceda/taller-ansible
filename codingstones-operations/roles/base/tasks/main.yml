@@ -1,0 +1,13 @@
+---
+- name: set root password
+  user:
+    name=root
+    password="{{ root_password }}"
+
+- name: install additional packages
+  apt:
+    pkg={{ item }}
+    state=present
+  with_items:
+    - vim
+    - git-core

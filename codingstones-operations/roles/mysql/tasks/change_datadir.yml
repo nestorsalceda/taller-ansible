@@ -1,0 +1,14 @@
+---
+- name: stop service
+  service:
+    name=mysql
+    state=stopped
+
+- name: move previous datadir to a backup
+  command: mv "{{ mysql_previous_datadir }}" "{{ mysql_previous_datadir }}.bak"
+    creates="{{ mysql_previous_datadir}}.bak"
+
+- name: move datadir location
+  command: cp -Rp "{{ mysql_previous_datadir }}.bak" "{{ mysql_datadir }}"
+    creates="{{ mysql_datadir }}"
+

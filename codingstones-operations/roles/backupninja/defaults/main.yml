@@ -1,0 +1,23 @@
+---
+
+backupninja_postgresql_databases: 'all'
+backupninja_postgresql_compress: 'yes'
+
+backupninja_mysql_databases: 'all'
+backupninja_mysql_compress: 'yes'
+
+backupninja_duplicity_password: 'password'
+backupninja_duplicity_include: []
+backupninja_duplicity_exclude: []
+backupninja_duplicity_increments: 30
+backupninja_duplicity_keep: 60
+backupninja_duplicity_desturl: 'file:///backups'
+
+backupninja_loglevel: 4
+backupninja_reportemail: root
+backupninja_reportsuccess: 'no'
+backupninja_reportinfo: 'no'
+backupninja_reportwarning: 'yes'
+backupninja_reportspace: 'no'
+backupninja_when: 'everyday at 01:00'
+

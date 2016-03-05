@@ -1,0 +1,38 @@
+---
+- name: install package
+  apt:
+    pkg=munin
+    state=present
+
+- name: configure
+  template:
+    src=munin.conf.j2
+    dest=/etc/munin/munin.conf
+
+- name: create munin_dbdir directory
+  file:
+    path="{{ munin_dbdir }}"
+    owner=munin
+    group=munin
+    state=directory
+
+- name: disable cron jobs notification
+  copy:
+    src=munin
+    dest=/etc/cron.d/munin
+    owner=root
+    group=root
+    mode=644
+
+- name: install passlib
+  apt:
+    pkg=python-passlib
+    state=present
+
+- name: create munin user for http
+  htpasswd:
+    create: yes
+    name: "{{ munin_user }}"
+    password: "{{ munin_password }}"
+    path: /etc/munin/htpasswd
+    state: present

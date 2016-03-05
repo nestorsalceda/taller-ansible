@@ -1,0 +1,50 @@
+---
+- name: install package
+  apt:
+    pkg={{ item }}
+    state=present
+  with_items:
+    - mysql-server
+    - python-mysqldb
+
+- name: check if mysql data dir exists
+  stat:
+    path="{{ mysql_datadir }}"
+  register: check_mysql_datadir
+
+- name: change data directory
+  include: change_datadir.yml
+  when:
+    mysql_datadir != mysql_previous_datadir and
+    check_mysql_datadir.stat.exists == False
+
+- name: configure
+  template:
+    src=my.cnf.j2
+    dest=/etc/mysql/my.cnf
+  notify: restart mysql
+
+- name: start service
+  service:
+    name=mysql
+    state=started
+
+- name: set root password
+  mysql_user:
+    name=root
+    host={{ item }}
+    password={{ mysql_root_password }}
+  with_items:
+    - "{{ ansible_hostname }}"
+    - 127.0.0.1
+    - ::1
+    - localhost
+
+- name: copy root .my.cnf file with credentials
+  template:
+    src=.my.cnf.j2
+    dest=/root/.my.cnf
+    mode=0600
+
+- name: register that mysql was installed
+  set_fact: mysql_was_installed=True

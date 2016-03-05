@@ -1,0 +1,3 @@
+---
+- name: reconfigure exim
+  shell: /usr/sbin/update-exim4.conf

@@ -1,0 +1,5 @@
+---
+- name: configure debian backports
+  template:
+    src=backports.list.j2
+    dest=/etc/apt/sources.list.d/backports.list

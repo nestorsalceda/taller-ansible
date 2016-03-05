@@ -1,0 +1,23 @@
+---
+firewall_rules:
+  - name: WWW
+    rule: allow
+  - name: WWW Secure
+    rule: allow
+
+nginx_sites:
+  - server_name: munin.codingstones.com
+    site_type: "https"
+    root: /var/cache/munin/www
+    locations:
+      - url: /
+        directives:
+          - auth_basic: '"Login"'
+          - auth_basic_user_file: "/etc/munin/htpasswd"
+
+
+munin_node_plugins:
+  - name: munin_stats
+  - name: munin_update
+  - name: nginx_request
+  - name: nginx_status

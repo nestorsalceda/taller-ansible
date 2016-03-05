@@ -1,0 +1,5 @@
+---
+munin_plugins:
+  - name: apt_all
+  - name: exim_mailstats
+  - name: exim_mailqueue

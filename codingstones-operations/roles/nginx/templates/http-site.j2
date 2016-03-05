@@ -1,0 +1,17 @@
+server {
+{% for name, value in item.iteritems() %}
+{% if name not in ["locations", "site_type"] %}
+	{{ name }} {{ value }};
+{% endif %}
+{% endfor %}
+
+{% for location in item.locations %}
+	location {{ location.url }} {
+{% for directive in location.directives %}
+{% for name, value in directive.iteritems() %}
+		{{ name }} {{ value }};
+{% endfor %}
+{% endfor %}
+	}
+{% endfor %}
+}

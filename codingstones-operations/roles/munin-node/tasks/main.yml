@@ -1,0 +1,51 @@
+---
+- name: install package
+  apt:
+    pkg=munin-node
+    state=present
+
+- name: configure
+  template:
+    src=munin-node.conf.j2
+    dest=/etc/munin/munin-node.conf
+  notify: restart munin
+
+- name: enable additional plugins
+  file:
+    path=/etc/munin/plugins/{{ item.name }}
+    src=/usr/share/munin/plugins/{{ item.plugin | default( item.name ) }}
+    state=link
+  with_flattened:
+    - munin_plugins
+    - munin_node_plugins
+  notify: restart munin
+
+- name: disable plugins
+  file:
+    path=/etc/munin/plugins/{{ item }}
+    state=absent
+  with_items: munin_node_plugins_disabled
+  notify: restart munin
+
+- name: configure additional plugins
+  template:
+    src=plugin-conf.j2
+    dest=/etc/munin/plugin-conf.d/plugin-conf
+    owner=root
+    group=root
+    mode=644
+  notify: restart munin
+  when: munin_node_plugins_config
+
+- name: disable cron jobs notification
+  copy:
+    src=munin-node
+    dest=/etc/cron.d/munin-node
+    owner=root
+    group=root
+    mode=644
+
+- name: start service
+  service:
+    name=munin-node
+    state=started

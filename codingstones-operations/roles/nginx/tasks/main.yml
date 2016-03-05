@@ -1,0 +1,54 @@
+---
+- name: install package
+  apt:
+    pkg=nginx
+    state=present
+    default_release={{ansible_distribution_release}}-backports
+
+- name: remove default site
+  file:
+    path=/etc/nginx/sites-{{ item }}/default
+    state=absent
+  with_items:
+    - enabled
+    - available
+  notify: restart nginx
+
+- name: configure available sites
+  template:
+    src={{ item.site_type | default('http')}}-site.j2
+    dest="/etc/nginx/sites-available/{{item.server_name}}"
+  with_items: nginx_sites
+  notify: reload nginx
+
+- name: enable sites
+  file:
+    path: "/etc/nginx/sites-enabled/{{item.server_name}}"
+    src: "/etc/nginx/sites-available/{{item.server_name}}"
+    state: link
+  with_items: nginx_sites
+  notify: reload nginx
+
+- name: configure
+  template:
+    src=nginx.conf.j2
+    dest=/etc/nginx/nginx.conf
+  notify: restart nginx
+
+- name: configure status site
+  template:
+    src=nginx_status-site.j2
+    dest="/etc/nginx/sites-available/nginx_status"
+  notify: reload nginx
+
+- name: enable status site
+  file:
+    path: "/etc/nginx/sites-enabled/nginx_status"
+    src: "/etc/nginx/sites-available/nginx_status"
+    state: link
+  notify: reload nginx
+
+- name: start service
+  service:
+    name=nginx
+    state=started

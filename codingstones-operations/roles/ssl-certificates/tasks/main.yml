@@ -1,0 +1,17 @@
+---
+- name: install SSL certificate
+  copy:
+    content: "{{ ssl_certificate }}"
+    dest: "{{ ssl_certificate_path }}"
+    owner: root
+    group: root
+    mode: 0644
+
+- name: install SSL certificate key
+  copy:
+    content: "{{ ssl_private_key }}"
+    dest: "{{ ssl_private_key_path }}"
+    owner: root
+    group: root
+    mode: 0640
+
