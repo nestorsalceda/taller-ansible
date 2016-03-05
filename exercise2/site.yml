@@ -1,0 +1,11 @@
+---
+- hosts: all
+  pre_tasks:
+    - name: update the apt cache
+      apt:
+  # post_tasks:
+  roles:
+    - backports
+    - role: nginx
+      nginx_worker_connections: 2
+
